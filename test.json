@@ -1,0 +1,267 @@
+{
+    "$schema": "./schema.json",
+    "stages": [{
+        "id": "initialize",
+        "states": [{
+            "id": "start",
+            "actions": [],
+            "transitions": [
+                {
+                    "kind": "piston_position",
+                    "operator": ">=",
+                    "value": 60,
+                    "target": "2"
+                },
+                {
+                    "kind": "piston_position",
+                    "operator": "<",
+                    "value": 60,
+                    "target": "1"
+                }
+            ]
+        },
+        {
+            "id": "1",
+            "actions": [
+                {
+                    "kind": "move_piston",
+                    "parameters": {
+                        "mode": "absolute_position",
+                        "value": 60,
+                        "speed": 2
+                    }
+                }
+            ],
+            "transitions": [
+                {
+                    "kind": "piston_position",
+                    "operator": ">=",
+                    "value": 60,
+                    "target": "2"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "actions": [],
+            "transitions": [
+                {
+                    "kind": "water_check",
+                    "operator": "=",
+                    "value": true,
+                    "target": "4"
+                },
+                {
+                    "kind": "water_check",
+                    "operator": "=",
+                    "value": false,
+                    "target": "3"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "actions": [
+                {
+                    "kind": "error",
+                    "parameters": {
+                        "code": "no_water"
+                    }
+                },
+                {
+                    "kind": "sleep",
+                    "parameters": {
+                        "timeInMs": 2
+                    }
+                },
+                {
+                    "kind": "timeout",
+                    "parameters": {
+                        "timeInMs": 1000,
+                        "tag": "water_check"
+                    }
+                }
+            ],
+            "transitions": [
+                {
+                    "kind": "timeout",
+                    "tag": "water_check",
+                    "operator": "=",
+                    "value": true,
+                    "target": "end"
+                },
+                {
+                    "kind": "wake",
+                    "operator": "=",
+                    "value": true,
+                    "target": "2"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "actions": [
+                {
+                    "kind": "water_temp_pid_1",
+                    "parameters": {
+                        "mode": "linear_interpolation",
+                        "x": 0,
+                        "y": 90
+                    }
+                }
+            ],
+            "transitions": [
+                {
+                    "kind": "water_temp",
+                    "operator": ">=",
+                    "value": 90,
+                    "target": "5"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "actions": [
+                {
+                    "kind": "water_temp_pid_1",
+                    "parameters": {
+                        "mode": "linear_interpolation",
+                        "x": 0,
+                        "y": 90
+                    }
+                },
+                {
+                    "kind": "sleep",
+                    "parameters": {
+                        "timeInMs": 5
+                    }
+                }
+            ],
+            "transitions": [
+                {
+                    "kind": "wake",
+                    "operator": "=",
+                    "value": true,
+                    "target": "6"
+                }
+            ]
+        },
+        {
+            "id": "6",
+            "actions": [
+                {
+                    "kind": "water_temp_pid_1",
+                    "parameters": {
+                        "mode": "linear_interpolation",
+                        "x": 0,
+                        "y": 90
+                    }
+                },
+                {
+                    "kind": "move_piston",
+                    "parameters": {
+                        "mode": "absolute_position",
+                        "value": 55,
+                        "speed": 1.5
+                    }
+                }
+            ],
+            "transitions": [
+                {
+                    "kind": "piston_position",
+                    "operator": "<=",
+                    "value": 55,
+                    "target": "7"
+                }
+            ]
+        },
+        {
+            "id": "7",
+            "actions": [
+                {
+                    "kind": "water_temp_pid_1",
+                    "parameters": {
+                        "mode": "linear_interpolation",
+                        "x": 0,
+                        "y": 90
+                    }
+                },
+                {
+                    "kind": "sleep",
+                    "parameters": {
+                        "timeInMs": 0.5
+                    }
+                }
+            ],
+            "transitions": [
+                {
+                    "kind": "wake",
+                    "value": true,
+                    "operator": "=",
+                    "target": "8"
+                }
+            ]
+        },
+        {
+            "id": "8",
+            "actions": [
+                {
+                    "kind": "water_temp_pid_1",
+                    "parameters": {
+                        "mode": "linear_interpolation",
+                        "x": 0,
+                        "y": 90
+                    }
+                },
+                {
+                    "kind": "move_piston",
+                    "parameters": {
+                        "mode": "absolute_position",
+                        "value": 0,
+                        "speed": 5
+                    }
+                }
+            ],
+            "transitions": [
+                {
+                    "kind": "piston_position",
+                    "operator": "<=",
+                    "value": 0,
+                    "target": "9"
+                }
+            ]
+        },
+        {
+            "id": "9",
+            "actions": [
+                {
+                    "kind": "water_temp_pid_1",
+                    "parameters": {
+                        "mode": "linear_interpolation",
+                        "x": 0,
+                        "y": 90
+                    }
+                },
+                {
+                    "kind": "sleep",
+                    "parameters": {
+                        "timeInMs": 0.2
+                    }
+                }
+            ],
+            "transitions": [
+                {
+                    "kind": "wake",
+                    "operator": "=",
+                    "value": true,
+                    "target": "end"
+                }
+            ]
+        }, 
+        {
+            "id": "end",
+            "actions": [],
+            "transitions": []
+        }]
+    }]
+}

@@ -1,0 +1,425 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/Flow",
+    "definitions": {
+        "Flow": {
+            "type": "object",
+            "properties": {
+                "stages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Stage"
+                    }
+                }
+            },
+            "required": [
+                "stages"
+            ],
+            "additionalProperties": false
+        },
+        "Stage": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "states": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/State"
+                    }
+                }
+            },
+            "required": [
+                "id",
+                "states"
+            ],
+            "additionalProperties": false
+        },
+        "State": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "actions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Action"
+                    }
+                },
+                "transitions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Transition"
+                    }
+                }
+            },
+            "required": [
+                "id",
+                "actions",
+                "transitions"
+            ],
+            "additionalProperties": false
+        },
+        "Action": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/MovePistonAction"
+                },
+                {
+                    "$ref": "#/definitions/ErrorAction"
+                },
+                {
+                    "$ref": "#/definitions/SleepAction"
+                },
+                {
+                    "$ref": "#/definitions/TimeoutAction"
+                },
+                {
+                    "$ref": "#/definitions/WaterTempPID1Action"
+                }
+            ]
+        },
+        "MovePistonAction": {
+            "type": "object",
+            "properties": {
+                "kind": {
+                    "type": "string",
+                    "const": "move_piston"
+                },
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "mode": {
+                            "type": "string",
+                            "const": "absolute_position"
+                        },
+                        "value": {
+                            "type": "number"
+                        },
+                        "speed": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "mode",
+                        "value",
+                        "speed"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "kind",
+                "parameters"
+            ],
+            "additionalProperties": false
+        },
+        "ErrorAction": {
+            "type": "object",
+            "properties": {
+                "kind": {
+                    "type": "string",
+                    "const": "error"
+                },
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "code": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "code"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "kind",
+                "parameters"
+            ],
+            "additionalProperties": false
+        },
+        "SleepAction": {
+            "type": "object",
+            "properties": {
+                "kind": {
+                    "type": "string",
+                    "const": "sleep"
+                },
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "timeInMs": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "timeInMs"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "kind",
+                "parameters"
+            ],
+            "additionalProperties": false
+        },
+        "TimeoutAction": {
+            "type": "object",
+            "properties": {
+                "kind": {
+                    "type": "string",
+                    "const": "timeout"
+                },
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "timeInMs": {
+                            "type": "number"
+                        },
+                        "tag": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "timeInMs",
+                        "tag"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "kind",
+                "parameters"
+            ],
+            "additionalProperties": false
+        },
+        "WaterTempPID1Action": {
+            "type": "object",
+            "properties": {
+                "kind": {
+                    "type": "string",
+                    "const": "water_temp_pid_1"
+                },
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "mode": {
+                            "type": "string",
+                            "const": "linear_interpolation"
+                        },
+                        "x": {
+                            "type": "number"
+                        },
+                        "y": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "mode",
+                        "x",
+                        "y"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "kind",
+                "parameters"
+            ],
+            "additionalProperties": false
+        },
+        "Transition": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/PistonPositionTransition"
+                },
+                {
+                    "$ref": "#/definitions/WaterCheckTransition"
+                },
+                {
+                    "$ref": "#/definitions/WaterTempTransition"
+                },
+                {
+                    "$ref": "#/definitions/TimeoutTransition"
+                },
+                {
+                    "$ref": "#/definitions/WakeTransition"
+                }
+            ]
+        },
+        "PistonPositionTransition": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "type": "string",
+                    "enum": [
+                        "=",
+                        "!=",
+                        "<",
+                        "<=",
+                        ">",
+                        ">="
+                    ]
+                },
+                "value": {
+                    "type": "number"
+                },
+                "target": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string",
+                    "const": "piston_position"
+                }
+            },
+            "required": [
+                "kind",
+                "operator",
+                "target",
+                "value"
+            ],
+            "additionalProperties": false
+        },
+        "WaterCheckTransition": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "type": "string",
+                    "enum": [
+                        "=",
+                        "!=",
+                        "<",
+                        "<=",
+                        ">",
+                        ">="
+                    ]
+                },
+                "value": {
+                    "type": "boolean"
+                },
+                "target": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string",
+                    "const": "water_check"
+                }
+            },
+            "required": [
+                "kind",
+                "operator",
+                "target",
+                "value"
+            ],
+            "additionalProperties": false
+        },
+        "WaterTempTransition": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "type": "string",
+                    "enum": [
+                        "=",
+                        "!=",
+                        "<",
+                        "<=",
+                        ">",
+                        ">="
+                    ]
+                },
+                "value": {
+                    "type": "number"
+                },
+                "target": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string",
+                    "const": "water_temp"
+                }
+            },
+            "required": [
+                "kind",
+                "operator",
+                "target",
+                "value"
+            ],
+            "additionalProperties": false
+        },
+        "TimeoutTransition": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "type": "string",
+                    "const": "="
+                },
+                "value": {
+                    "type": "boolean",
+                    "const": true
+                },
+                "target": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string",
+                    "const": "timeout"
+                }
+            },
+            "required": [
+                "kind",
+                "operator",
+                "tag",
+                "target",
+                "value"
+            ],
+            "additionalProperties": false
+        },
+        "WakeTransition": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "type": "string",
+                    "const": "="
+                },
+                "value": {
+                    "type": "boolean",
+                    "const": true
+                },
+                "target": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string",
+                    "const": "wake"
+                }
+            },
+            "required": [
+                "kind",
+                "operator",
+                "target",
+                "value"
+            ],
+            "additionalProperties": false
+        }
+    }
+}
