@@ -43,7 +43,7 @@ setup(
     license='MIT License',
     author='Jose Manuel Heredia Hidalgo',
     author_email='mane@outlook.com',
-    url='https://github.com/mane.dev/fika-profile-engine',
+    url='https://github.com/mane-dev/fika-state',
     classifiers=[
         "Development Status :: 4 - Beta",
         'Programming Language :: Python',

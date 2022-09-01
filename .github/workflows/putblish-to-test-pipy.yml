@@ -17,6 +17,15 @@ jobs:
         pip install
         build
         --user
+    - name: Install pytest
+      run: >-
+        python -m
+        pip install
+        pytest
+        --user
+    - name: Test Project
+      run: >-
+        pytest
     - name: Build a binary wheel and a source tarball
       run: >-
         python -m

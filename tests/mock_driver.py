@@ -3,8 +3,9 @@ from fika_profile_engine import Driver
 from fika_profile_engine import FikaSensorState
 
 class FikaMockDriver(Driver):
-    def __init__(self, initialState:FikaSensorState):
-        self.state = initialState
+    def __init__(self):
+        initial_state={"has_water": True, "piston_position": 0, "water_temp": 0, "water_flow": 0, "water_pressure": 0, "weight": 0, "piston_speed": 0, "motor_encoder": 0}
+        self.state = initial_state
 
     def get_sensor_data(self) -> FikaSensorState:
         return self.state

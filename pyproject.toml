@@ -1,6 +1,7 @@
 [build-system]
 requires = [
-    "hatchling>=1.8.1"
+    "hatchling>=1.8.1",
+    "pytest>=7.1.2"
 ]
 build-backend = "hatchling.build"
 
@@ -29,7 +30,7 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/mane.dev/fika-profile-engine"
+Homepage = "https://github.com/mane-dev/fika-state"
 
 [tool.hatch.version]
 path = "fika_profile_engine/_version.py"
