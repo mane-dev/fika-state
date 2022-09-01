@@ -1,11 +1,10 @@
 {
-    "$schema": "./schema.json",
     "stages": [{
         "id": "initialize",
-        "states": [{
+        "nodes": [{
             "id": "start",
-            "actions": [],
-            "transitions": [
+            "controllers": [],
+            "triggers": [
                 {
                     "kind": "piston_position",
                     "operator": ">=",
@@ -22,7 +21,7 @@
         },
         {
             "id": "1",
-            "actions": [
+            "controllers": [
                 {
                     "kind": "move_piston",
                     "parameters": {
@@ -32,7 +31,7 @@
                     }
                 }
             ],
-            "transitions": [
+            "triggers": [
                 {
                     "kind": "piston_position",
                     "operator": ">=",
@@ -43,16 +42,16 @@
         },
         {
             "id": "2",
-            "actions": [],
-            "transitions": [
+            "controllers": [],
+            "triggers": [
                 {
-                    "kind": "water_check",
+                    "kind": "has_water",
                     "operator": "=",
                     "value": true,
                     "target": "4"
                 },
                 {
-                    "kind": "water_check",
+                    "kind": "has_water",
                     "operator": "=",
                     "value": false,
                     "target": "3"
@@ -61,7 +60,7 @@
         },
         {
             "id": "3",
-            "actions": [
+            "controllers": [
                 {
                     "kind": "error",
                     "parameters": {
@@ -69,9 +68,9 @@
                     }
                 },
                 {
-                    "kind": "sleep",
+                    "kind": "timer",
                     "parameters": {
-                        "timeInMs": 2
+                        "timeInMs": 2000
                     }
                 },
                 {
@@ -82,7 +81,7 @@
                     }
                 }
             ],
-            "transitions": [
+            "triggers": [
                 {
                     "kind": "timeout",
                     "tag": "water_check",
@@ -100,9 +99,9 @@
         },
         {
             "id": "4",
-            "actions": [
+            "controllers": [
                 {
-                    "kind": "water_temp_pid_1",
+                    "kind": "set_water_temp",
                     "parameters": {
                         "mode": "linear_interpolation",
                         "x": 0,
@@ -110,7 +109,7 @@
                     }
                 }
             ],
-            "transitions": [
+            "triggers": [
                 {
                     "kind": "water_temp",
                     "operator": ">=",
@@ -121,9 +120,9 @@
         },
         {
             "id": "5",
-            "actions": [
+            "controllers": [
                 {
-                    "kind": "water_temp_pid_1",
+                    "kind": "set_water_temp",
                     "parameters": {
                         "mode": "linear_interpolation",
                         "x": 0,
@@ -131,13 +130,13 @@
                     }
                 },
                 {
-                    "kind": "sleep",
+                    "kind": "timer",
                     "parameters": {
-                        "timeInMs": 5
+                        "timeInMs": 5000
                     }
                 }
             ],
-            "transitions": [
+            "triggers": [
                 {
                     "kind": "wake",
                     "operator": "=",
@@ -148,9 +147,9 @@
         },
         {
             "id": "6",
-            "actions": [
+            "controllers": [
                 {
-                    "kind": "water_temp_pid_1",
+                    "kind": "set_water_temp",
                     "parameters": {
                         "mode": "linear_interpolation",
                         "x": 0,
@@ -166,7 +165,7 @@
                     }
                 }
             ],
-            "transitions": [
+            "triggers": [
                 {
                     "kind": "piston_position",
                     "operator": "<=",
@@ -177,9 +176,9 @@
         },
         {
             "id": "7",
-            "actions": [
+            "controllers": [
                 {
-                    "kind": "water_temp_pid_1",
+                    "kind": "set_water_temp",
                     "parameters": {
                         "mode": "linear_interpolation",
                         "x": 0,
@@ -187,13 +186,13 @@
                     }
                 },
                 {
-                    "kind": "sleep",
+                    "kind": "timer",
                     "parameters": {
-                        "timeInMs": 0.5
+                        "timeInMs": 500
                     }
                 }
             ],
-            "transitions": [
+            "triggers": [
                 {
                     "kind": "wake",
                     "value": true,
@@ -204,9 +203,9 @@
         },
         {
             "id": "8",
-            "actions": [
+            "controllers": [
                 {
-                    "kind": "water_temp_pid_1",
+                    "kind": "set_water_temp",
                     "parameters": {
                         "mode": "linear_interpolation",
                         "x": 0,
@@ -222,7 +221,7 @@
                     }
                 }
             ],
-            "transitions": [
+            "triggers": [
                 {
                     "kind": "piston_position",
                     "operator": "<=",
@@ -233,9 +232,9 @@
         },
         {
             "id": "9",
-            "actions": [
+            "controllers": [
                 {
-                    "kind": "water_temp_pid_1",
+                    "kind": "set_water_temp",
                     "parameters": {
                         "mode": "linear_interpolation",
                         "x": 0,
@@ -243,13 +242,13 @@
                     }
                 },
                 {
-                    "kind": "sleep",
+                    "kind": "timer",
                     "parameters": {
-                        "timeInMs": 0.2
+                        "timeInMs": 200
                     }
                 }
             ],
-            "transitions": [
+            "triggers": [
                 {
                     "kind": "wake",
                     "operator": "=",
@@ -260,8 +259,8 @@
         }, 
         {
             "id": "end",
-            "actions": [],
-            "transitions": []
+            "controllers": [],
+            "triggers": []
         }]
     }]
 }

@@ -1,10 +1,9 @@
-class Transition:
-    kind = property()
-
-    def __init__(self, operator, value, tag=None):
+class Trigger:
+    def __init__(self, kind, operator, value, tag=None):
         self.operator = operator
         self.value = value
         self.tag = tag
+        self.kind = kind
 
     def evaluate(self, payload):
         if payload == None:
@@ -14,13 +13,11 @@ class Transition:
         if entry == None:
             return False
 
-        tag = entry.get("tag", None)
+        # tag = entry.get("tag", None)
 
-        if tag != self.tag:
-            return False
-
-        currentValue = entry.get("value", None)
-        return _evaluate(self.operator, currentValue, self.value)
+        # if tag != self.tag:
+        #     return False
+        return _evaluate(self.operator, entry, self.value)
 
 
 
@@ -61,28 +58,3 @@ def eq(a, b):
 
 def ne(a, b):
     return a != b
-
-
-class PistonPositionTransition(Transition):
-    kind = "piston_position"
-
-
-class WaterCheckTransition(Transition):
-    kind = "water_check"
-
-
-class WaterTempTransition(Transition):
-    kind = "water_temp"
-
-
-class TimeoutTransition(Transition):
-    kind = "timeout"
-
-
-class WakeTransition(Transition):
-    kind = "wake"
-
-
-# foo = PistonPositionTransition(">=", "c", "end")
-
-# print(foo.evaluate({"piston_position": {"value": "b"}}))

@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$ref": "#/definitions/Flow",
     "definitions": {
-        "Flow": {
+        "Profile": {
             "type": "object",
             "properties": {
                 "stages": {
@@ -23,65 +23,65 @@
                 "id": {
                     "type": "string"
                 },
-                "states": {
+                "nodes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/State"
+                        "$ref": "#/definitions/Node"
                     }
                 }
             },
             "required": [
                 "id",
-                "states"
+                "nodes"
             ],
             "additionalProperties": false
         },
-        "State": {
+        "Node": {
             "type": "object",
             "properties": {
                 "id": {
                     "type": "string"
                 },
-                "actions": {
+                "controllers": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/Action"
+                        "$ref": "#/definitions/Controller"
                     }
                 },
-                "transitions": {
+                "triggers": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/Transition"
+                        "$ref": "#/definitions/Trigger"
                     }
                 }
             },
             "required": [
                 "id",
-                "actions",
-                "transitions"
+                "controllers",
+                "triggers"
             ],
             "additionalProperties": false
         },
-        "Action": {
+        "Controller": {
             "anyOf": [
                 {
-                    "$ref": "#/definitions/MovePistonAction"
+                    "$ref": "#/definitions/MovePistonController"
                 },
                 {
-                    "$ref": "#/definitions/ErrorAction"
+                    "$ref": "#/definitions/LogController"
                 },
                 {
-                    "$ref": "#/definitions/SleepAction"
+                    "$ref": "#/definitions/TimerController"
                 },
                 {
-                    "$ref": "#/definitions/TimeoutAction"
+                    "$ref": "#/definitions/TimeoutController"
                 },
                 {
-                    "$ref": "#/definitions/WaterTempPID1Action"
+                    "$ref": "#/definitions/WaterTempPID1Controller"
                 }
             ]
         },
-        "MovePistonAction": {
+        "MovePistonController": {
             "type": "object",
             "properties": {
                 "kind": {
@@ -116,12 +116,12 @@
             ],
             "additionalProperties": false
         },
-        "ErrorAction": {
+        "LogController": {
             "type": "object",
             "properties": {
                 "kind": {
                     "type": "string",
-                    "const": "error"
+                    "const": "log"
                 },
                 "parameters": {
                     "type": "object",
@@ -142,12 +142,12 @@
             ],
             "additionalProperties": false
         },
-        "SleepAction": {
+        "TimerController": {
             "type": "object",
             "properties": {
                 "kind": {
                     "type": "string",
-                    "const": "sleep"
+                    "const": "timer"
                 },
                 "parameters": {
                     "type": "object",
@@ -168,42 +168,12 @@
             ],
             "additionalProperties": false
         },
-        "TimeoutAction": {
-            "type": "object",
-            "properties": {
-                "kind": {
-                    "type": "string",
-                    "const": "timeout"
-                },
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "timeInMs": {
-                            "type": "number"
-                        },
-                        "tag": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "timeInMs",
-                        "tag"
-                    ],
-                    "additionalProperties": false
-                }
-            },
-            "required": [
-                "kind",
-                "parameters"
-            ],
-            "additionalProperties": false
-        },
         "WaterTempPID1Action": {
             "type": "object",
             "properties": {
                 "kind": {
                     "type": "string",
-                    "const": "water_temp_pid_1"
+                    "const": "water_temp"
                 },
                 "parameters": {
                     "type": "object",
@@ -313,7 +283,7 @@
                 },
                 "kind": {
                     "type": "string",
-                    "const": "water_check"
+                    "const": "has_water"
                 }
             },
             "required": [
