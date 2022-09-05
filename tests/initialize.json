@@ -29,6 +29,12 @@
                         "value": 60,
                         "speed": 2
                     }
+                },
+                {
+                    "kind": "weight",
+                    "parameters": {
+                        "value": 60
+                    }
                 }
             ],
             "triggers": [
@@ -42,7 +48,12 @@
         },
         {
             "id": "2",
-            "controllers": [],
+            "controllers": [{
+                "kind": "weight",
+                "parameters": {
+                    "value": 60
+                }
+            }],
             "triggers": [
                 {
                     "kind": "has_water",
@@ -61,6 +72,12 @@
         {
             "id": "3",
             "controllers": [
+                {
+                    "kind": "weight",
+                    "parameters": {
+                        "value": 60
+                    }
+                },
                 {
                     "kind": "error",
                     "parameters": {
@@ -101,6 +118,12 @@
             "id": "4",
             "controllers": [
                 {
+                    "kind": "weight",
+                    "parameters": {
+                        "value": 60
+                    }
+                },
+                {
                     "kind": "set_water_temp",
                     "parameters": {
                         "mode": "linear_interpolation",
@@ -121,6 +144,12 @@
         {
             "id": "5",
             "controllers": [
+                {
+                    "kind": "weight",
+                    "parameters": {
+                        "value": 60
+                    }
+                },
                 {
                     "kind": "set_water_temp",
                     "parameters": {
@@ -178,6 +207,12 @@
             "id": "7",
             "controllers": [
                 {
+                    "kind": "weight",
+                    "parameters": {
+                        "value": 60
+                    }
+                },
+                {
                     "kind": "set_water_temp",
                     "parameters": {
                         "mode": "linear_interpolation",
@@ -204,6 +239,12 @@
         {
             "id": "8",
             "controllers": [
+                {
+                    "kind": "weight",
+                    "parameters": {
+                        "value": 60
+                    }
+                },
                 {
                     "kind": "set_water_temp",
                     "parameters": {
@@ -233,6 +274,12 @@
         {
             "id": "9",
             "controllers": [
+                {
+                    "kind": "weight",
+                    "parameters": {
+                        "value": 60
+                    }
+                },
                 {
                     "kind": "set_water_temp",
                     "parameters": {

@@ -1,10 +1,14 @@
+from threading import Thread
 import time
-from fika_profile_engine._fika_state import FikaSensorState
-from fika_profile_engine._node import Controller, Node, Profile
+from fika.profile_engine._fika_state import FikaSensorState
+from fika.profile_engine._node import Controller, Node, Profile
 from typing import Iterable
-from fika_profile_engine._driver_interface import Driver
-from fika_profile_engine._trigger import Trigger
+from fika.profile_engine._driver_interface import Driver
+from fika.profile_engine._trigger import Trigger
 
+"""
+The Fika class is the main entry point for the Fika profile engine.
+"""
 class Fika:
     def __init__(self, profile: Profile, driver: Driver):
         self.__driver = driver
@@ -30,7 +34,6 @@ class Fika:
         self.__step()
         return self.current_node
 
-    # Maybe we need this to be a generator;
     def __step(self):
         if self.current_node["id"]  == "end":
             print('Reached end of profile')
@@ -78,9 +81,15 @@ class Fika:
 
     def __execute_controllers(self):
         controllers = self.current_node["controllers"]
+        threads: list[Thread] = list()
         for controller in controllers:
-            state = self.__execute_controller(controller)
-            self.update_state(state)
+            task = Thread(target=self.__execute_controller, args=(controller,))
+            threads.append(task)
+            task.start()
+        
+        for thread in threads:
+             thread.join() # waits for thread to complete its task
+             self.update_state(self.__driver.get_sensor_data())
 
     def __execute_controller(self, controller: Controller):
         if controller["kind"] == "move_piston":
@@ -97,7 +106,10 @@ class Fika:
 
         if controller["kind"] == "log":
             return self.__driver.log(controller["parameters"])
-        
+
+        if controller["kind"] == "weight":
+            return self.__driver.set_weight(controller["parameters"])
+            
         if controller["kind"] == "tare":
             return self.__driver.tare(controller["parameters"])
 

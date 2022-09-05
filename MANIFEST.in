@@ -1,6 +1,6 @@
 recursive-include tests *.py *.yaml
 include *.md
-include fika_profile_engine/__init__.py
+include fika/__init__.py
 include LICENSE
 recursive-include tests *.py
-include fika_profile_engine/py.typed
+include fika/profile_engine/py.typed

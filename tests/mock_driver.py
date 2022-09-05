@@ -1,6 +1,6 @@
 import time
-from fika_profile_engine import Driver
-from fika_profile_engine import FikaSensorState
+from fika.profile_engine import Driver
+from fika.profile_engine import FikaSensorState
 
 class FikaMockDriver(Driver):
     def __init__(self):
@@ -60,6 +60,7 @@ class FikaMockDriver(Driver):
         return self.state
 
     def set_weight(self, params):
+        time.sleep(3)
         current_sensor_state = self.state
         weight = current_sensor_state["weight"]
         target_weight = params["value"]

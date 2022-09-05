@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pytest
-from fika_profile_engine import Fika
+from fika.profile_engine import Fika
 from .mock_driver import FikaMockDriver
 
 

@@ -33,9 +33,9 @@ dependencies = []
 Homepage = "https://github.com/mane-dev/fika-state"
 
 [tool.hatch.version]
-path = "fika_profile_engine/_version.py"
+path = "fika/profile_engine/_version.py"
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "/fika_profile_engine",
+    "/fika",
 ]

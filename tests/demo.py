@@ -1,8 +1,25 @@
-import pytest
-from ..fika_profile_engine._engine import Fika 
-from tests.mock_driver import FikaMockDriver
+import json
+import time
+from fika.profile_engine import Fika
+from .mock_driver import FikaMockDriver
 
+# Open the JSON definition of the profile to run
+f = open ('/home/joheredi/prototypes/fika-profile-engine/tests/initialize.json', "r")
+profile_definition = json.load(f)
+
+start_time = time.time()
+
+# Create a new instance of the Driver implementation
 driver = FikaMockDriver()
-profile = Fika(profile_path="/home/joheredi/prototypes/statemachine/initialize.json", driver=driver)
+# Create a new instance of the Fika profile engine with the driver and profile definition
+profile =  Fika(profile=profile_definition, driver=driver)
 
-profile.run()
+# Create an iterator to run the profile
+profile_iterator = iter(profile)
+
+# Run the profile, this will loop until the end node is reached
+for node in profile_iterator:
+    # Print the current node
+    print(node["id"])
+
+print("--- %s seconds ---" % (time.time() - start_time))

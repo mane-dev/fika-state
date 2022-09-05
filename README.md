@@ -34,8 +34,8 @@ $ source venv/bin/activate
 
 ```python
 import time
-from fika_profile_engine import Driver
-from fika_profile_engine import FikaSensorState
+from fika.profile_engine import Driver
+from fika.profile_engine import FikaSensorState
 
 class FikaMockDriver(Driver):
     def __init__(self, initialState:FikaSensorState):
@@ -147,7 +147,7 @@ class FikaMockDriver(Driver):
 
 ```python
 import json
-from fika_profile_engine import Fika 
+from fika.profile_engine import Fika 
 from mock_driver import FikaMockDriver
 
 # Open the JSON definition of the profile to run

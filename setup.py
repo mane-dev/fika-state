@@ -16,7 +16,7 @@ PACKAGE_NAME = "fika-profile-engine"
 PACKAGE_PPRINT_NAME = "Fika Profile Engine"
 
 # a-b-c => a/b/c
-package_folder_path = "fika_profile_engine"
+package_folder_path = "fika"
 # a-b-c => a.b.c
 namespace_name = PACKAGE_NAME.replace('-', '.')
 
